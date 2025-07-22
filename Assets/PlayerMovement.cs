@@ -14,12 +14,12 @@ public class PlayerMovement : MonoBehaviour
     float horizontalMovement;
 
     [Header("Jump Settings")]
-    private bool isJumping = false;
     public float jumpPower = 10f;
     public float jumpCutMultiplier = 0.3f;
     public int jumpsRemaining = 1;
 
     [Header("GroundCheck")]
+    private bool justJumped;
     private bool isGrounded;
     public Transform groundCheckPos;
     public Vector2 groundCheckSize = new Vector2(0.5f, 0.05f);
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     
 
     [Header("WallMovmement")]
-    public float wallSlideSpeed = 0.5f;
+    public float wallSlideSpeed = 2f;
     private bool isWallSliding;
     public Transform wallCheckPos;
     public Vector2 wallCheckSize = new Vector2(0.5f, 0.05f);
@@ -41,9 +41,9 @@ public class PlayerMovement : MonoBehaviour
     //wall jump
     private bool isWallJumping;
     private float wallJumpDir;
-    public float wallJumpTime = 0.5f;
+    public float wallJumpTime = 0.3f;
     private float wallJumpTimer;
-    public Vector2 wallJumpPower = new Vector2(5f, 10f);
+    public Vector2 wallJumpPower = new Vector2(4f, 7.3f);
 
     void Update()
     {
@@ -82,18 +82,15 @@ public class PlayerMovement : MonoBehaviour
     public void Jump(InputAction.CallbackContext ctx)
     {
 
-        if (jumpsRemaining > 0)
+        if (ctx.performed && jumpsRemaining > 0)
         {
-            if (ctx.performed)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
-                jumpsRemaining--;
-            }
-            else if (ctx.canceled && rb.linearVelocity.y > 0f)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
-                jumpsRemaining--;
-            }
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+            jumpsRemaining--;
+            justJumped = true;
+        }
+        else if (ctx.canceled && rb.linearVelocity.y > 0f)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
         }
 
         if (ctx.performed && wallJumpTimer > 0f)
@@ -116,13 +113,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void GroundCheck()
     {
-        if(Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0f, groundLayer))
+        bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0f, groundLayer);
+
+        if(grounded && !justJumped)
         {
             jumpsRemaining = 1;
             isGrounded = true;
         }
-        else
+        
+        if(!grounded && rb.linearVelocity.y <= 0f)
         {
+            justJumped = false;
             isGrounded = false;
         }
     }
