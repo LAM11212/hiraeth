@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -45,6 +46,14 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpTimer;
     public Vector2 wallJumpPower = new Vector2(4f, 7.3f);
 
+    [Header("DashMovement")]
+    private bool isDashing;
+    private int dashCount = 1;
+    private bool canDash;
+    public float dashPower = 10f;
+    public float dashTime = 0.2f;
+    private float dashTimer;
+
     void Update()
     {
         
@@ -52,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
         Gravity();
         ProcessWallSlide();
         ProcessWallJump();
+        ProcessDash();
         
 
         if (!isWallJumping)
@@ -111,6 +121,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void Dash(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed && CanDash())
+        {
+            isDashing = true;
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            dashTimer = 0f;
+            Invoke(nameof(CancelDash), dashTime + 0.1f);
+        }
+    }
+
     private void GroundCheck()
     {
         bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0f, groundLayer);
@@ -118,6 +139,7 @@ public class PlayerMovement : MonoBehaviour
         if(grounded && !justJumped)
         {
             jumpsRemaining = 1;
+            dashCount = 1;
             isGrounded = true;
         }
         
@@ -180,8 +202,43 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void ProcessDash()
+    {
+        if(isDashing)
+        {
+            isDashing = false;
+            float dashDirX = horizontalMovement;
+            float dashDirY = rb.linearVelocity.y;
+            Vector2 dashDir = new Vector2(dashDirX, dashDirY).normalized;
+            rb.AddForce(dashDir * dashPower, ForceMode2D.Impulse);
+            dashCount--;
+            CancelInvoke(nameof(CancelDash));
+        }
+        else if(dashTimer > 0f)
+        {
+            dashTimer -= Time.deltaTime;
+        }
+    }
+
     private void CancelWallJump()
     {
         isWallJumping = false;
+    }
+
+    private void CancelDash()
+    {
+        isDashing = false;
+    }
+
+    private bool CanDash()
+    {
+        // if dashCount > 0 && !isDashing then the player can dash
+        if (dashCount > 0 && !isDashing)
+        {
+            canDash = true;
+            return true;
+        }
+        canDash = false;
+        return false;
     }
 }
