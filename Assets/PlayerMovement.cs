@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashPower = 10f;
     public float dashTime = 0.2f;
     private float dashTimer;
+    public Vector2 dashDir;
 
     void Update()
     {
@@ -62,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallSlide();
         ProcessWallJump();
         ProcessDash();
-        
+        Debug.Log(dashDir.y);
 
         if (!isWallJumping)
         {
@@ -86,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx)
     {
+        dashDir = ctx.ReadValue<Vector2>();
         horizontalMovement = ctx.ReadValue<Vector2>().x;
     }
 
@@ -126,7 +128,6 @@ public class PlayerMovement : MonoBehaviour
         if(ctx.performed && CanDash())
         {
             isDashing = true;
-            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
             dashTimer = 0f;
             Invoke(nameof(CancelDash), dashTime + 0.1f);
         }
@@ -207,10 +208,8 @@ public class PlayerMovement : MonoBehaviour
         if(isDashing)
         {
             isDashing = false;
-            float dashDirX = horizontalMovement;
-            float dashDirY = rb.linearVelocity.y;
-            Vector2 dashDir = new Vector2(dashDirX, dashDirY).normalized;
-            rb.AddForce(dashDir * dashPower, ForceMode2D.Impulse);
+            //the dashing works in the diagonal directions, but weird interactions for dashing left/right/up/down will fix.
+            rb.linearVelocity = dashDir * dashPower;
             dashCount--;
             CancelInvoke(nameof(CancelDash));
         }
