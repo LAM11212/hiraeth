@@ -16,9 +16,12 @@ public class PlayerMovement : MonoBehaviour
     float verticalMovement;
 
     [Header("Jump Settings")]
+    [SerializeField] private float jumpHangTimer = 0.1f;
+    private float hangTimer = 0f;
     public float jumpPower = 10f;
     public float jumpCutMultiplier = 0.3f;
     public int jumpsRemaining = 1;
+    
 
     [Header("GroundCheck")]
     private bool justJumped;
@@ -58,11 +61,12 @@ public class PlayerMovement : MonoBehaviour
     private float dashTimer;
     public Vector2 dashDir;
 
-    //the dash is still a little messed up, y value launches farther due to dashDir.y being 1f as opposed to a diagonal which caps at 0.7f. need to fix this eventually.
-
     void Update()
     {
-        Debug.Log(isDashing);
+        if(hangTimer > 0f)
+        {
+            hangTimer -= Time.deltaTime;
+        }
         GroundCheck();
         Gravity();
         ProcessWallSlide();
@@ -71,8 +75,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isWallJumping && !isDashing)
         {
-            rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
             Flip();
+            rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
+            
         }
     }
 
@@ -91,8 +96,30 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx)
     {
-        horizontalMovement = ctx.ReadValue<Vector2>().x;
-        verticalMovement = ctx.ReadValue<Vector2>().y;
+        Vector2 input = ctx.ReadValue<Vector2>();
+
+        if(input.magnitude > 1f)
+        {
+            if(isFacingRight && input.x > 0f)
+            {
+                input.x = 1f;
+            }
+            else if(isFacingRight && input.x < 0f)
+            {
+                input.x = -1f;
+            }
+            else if (!isFacingRight && input.x < 0f)
+            {
+                input.x = -1f;
+            }
+            else if (!isFacingRight && input.x > 0f)
+            {
+                input.x = 1f;
+            }
+        }
+
+        horizontalMovement = input.x;
+        verticalMovement = input.y;
     }
 
     public void Jump(InputAction.CallbackContext ctx)
@@ -101,8 +128,8 @@ public class PlayerMovement : MonoBehaviour
         if (ctx.performed && jumpsRemaining > 0)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+            hangTimer = jumpHangTimer;
             jumpsRemaining--;
-            justJumped = true;
         }
         else if (ctx.canceled && rb.linearVelocity.y > 0f)
         {
@@ -131,7 +158,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if(ctx.performed && CanDash())
         {
-
             dashDir = GetDashDirection();
             isDashing = true;
             dashTimer = 0f;
@@ -143,16 +169,14 @@ public class PlayerMovement : MonoBehaviour
     {
         bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0f, groundLayer);
 
-        if(grounded && !justJumped)
+        if(grounded && hangTimer <= 0f)
         {
             jumpsRemaining = 1;
             dashCount = 1;
             isGrounded = true;
         }
-        
-        if(!grounded && rb.linearVelocity.y <= 0f)
+        else
         {
-            justJumped = false;
             isGrounded = false;
         }
     }
@@ -213,13 +237,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if(isDashing && dashTimer < dashTime)
         {
-            Debug.Log("dashTimer: " + dashTimer + " dashTime: " + dashTime);
             dashTimer += Time.deltaTime;
-            rb.linearVelocity = dashDir * dashPower;
+            if(dashDir.x > 0f && dashDir.y == 0f || dashDir.x < 0f && dashDir.y == 0f)
+            {
+                rb.linearVelocity = dashDir.normalized * (dashPower + 3f);
+            }
+            else
+            {
+                rb.linearVelocity = dashDir.normalized * dashPower;
+            }
+            
         }
         else if(dashTimer >= dashTime)
         {
-            Debug.Log("This actually does go through");
             CancelDash();
         }
     }
