@@ -67,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         {
             hangTimer -= Time.deltaTime;
         }
+
         GroundCheck();
         Gravity();
         ProcessWallSlide();
@@ -77,7 +78,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
-            
         }
     }
 
@@ -169,15 +169,21 @@ public class PlayerMovement : MonoBehaviour
     {
         bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0f, groundLayer);
 
-        if(grounded && hangTimer <= 0f)
+        if(grounded)
         {
-            jumpsRemaining = 1;
-            dashCount = 1;
             isGrounded = true;
+            hangTimer = jumpHangTimer;
+
+            if(!isDashing)
+            {
+                jumpsRemaining = 1;
+                dashCount = 1;
+            }
         }
         else
         {
             isGrounded = false;
+            jumpsRemaining = 0;
         }
     }
 
@@ -186,7 +192,6 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
         Gizmos.DrawWireCube(wallCheckPos.position, wallCheckSize);
-        
     }
 
     private void Flip()
@@ -199,7 +204,6 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = scale;
         }
     }
-
 
     private bool WallCheck()
     {
@@ -246,7 +250,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.linearVelocity = dashDir.normalized * dashPower;
             }
-            
         }
         else if(dashTimer >= dashTime)
         {

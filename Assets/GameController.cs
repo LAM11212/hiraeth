@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("LevelBound"))
+        if(collision.CompareTag("LevelBound") || collision.CompareTag("Obstacle"))
         {
             Respawn();
         }
