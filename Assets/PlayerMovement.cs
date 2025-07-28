@@ -53,10 +53,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("DashMovement")]
     private bool isDashing;
     private int dashCount = 1;
+    public float dashSpeed = 20f;
     private bool canDash;
     public float dashTime = 0.2f;
     public float dashDistance = 2.57f;
-    public float dashPower => dashDistance / dashTime;
 
     private float dashTimer;
     public Vector2 dashDir;
@@ -74,16 +74,13 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallJump();
         ProcessDash();
 
-        if(!isWallJumping)
+        if(!isWallJumping && !isDashing)
         {
             Flip();
-        }
-
-        if (!isDashing)
-        {
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
         }
 
+        
     }
 
     private void Gravity()
@@ -143,6 +140,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (ctx.performed && wallJumpTimer > 0f)
         {
+            Debug.Log("this is getting called");
             isWallJumping = true;
             rb.linearVelocity = new Vector2(wallJumpDir * wallJumpPower.x, wallJumpPower.y);
             wallJumpTimer = 0f;
@@ -163,12 +161,17 @@ public class PlayerMovement : MonoBehaviour
     {
         if(ctx.performed && CanDash())
         {
-            dashDir = GetDashDirection();
+            Vector2 input = new Vector2(horizontalMovement, verticalMovement);
+
+            if(input == Vector2.zero)
+                input = new Vector2(isFacingRight ? 1f : -1f, 0f);
+
+            dashDir = input.normalized;
             isDashing = true;
-            dashTimer = 0f;
+            dashTimer = dashTime;
+            rb.gravityScale = 0f;
+            rb.linearVelocity = Vector2.zero;
             dashCount--;
-            horizontalMovement = 0f;
-            verticalMovement = 0f;
         }
     }
 
@@ -246,13 +249,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessDash()
     {
-        if(isDashing && dashTimer < dashTime)
-        {
-            dashTimer += Time.deltaTime;
+        if (!isDashing) return;
 
-            rb.linearVelocity = dashDir * dashPower;
+        if(dashTimer > 0f)
+        {
+            dashTimer -= Time.deltaTime;
+            rb.linearVelocity = dashDir * dashSpeed;
         }
-        else if(dashTimer >= dashTime)
+        else
         {
             CancelDash();
         }
@@ -268,12 +272,11 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
         dashTimer = 0f;
         dashDir = Vector2.zero;
-        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        rb.gravityScale = baseGravity;
     }
 
     private bool CanDash()
     {
-        // if dashCount > 0 && !isDashing then the player can dash
         if (dashCount > 0 && !isDashing)
         {
             canDash = true;
@@ -281,27 +284,5 @@ public class PlayerMovement : MonoBehaviour
         }
         canDash = false;
         return false;
-    }
-
-    private Vector2 GetDashDirection()
-    {
-        float x = horizontalMovement;
-        float y = verticalMovement;
-
-        Vector2 input = new Vector2(x, y);
-
-        if(input == Vector2.zero)
-        {
-            return new Vector2(isFacingRight ? 1f : -1f, 0f);
-        }
-
-        Vector2 normalized = input.normalized;
-
-        if(normalized.y > 0.9f)
-        {
-            normalized.y = 0.5f;
-        }
-
-        return normalized.normalized;
     }
 }
