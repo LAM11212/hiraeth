@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     //wall jump
     private bool isWallJumping;
     private float wallJumpDir;
-    public float wallJumpTime = 0.3f;
+    public float wallJumpTime = 0.4f;
     private float wallJumpTimer;
     public Vector2 wallJumpPower = new Vector2(4f, 7.3f);
 
@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     private int dashCount = 1;
     private bool canDash;
     public float dashTime = 0.2f;
-    public float dashDistance = 5f;
+    public float dashDistance = 2.57f;
     public float dashPower => dashDistance / dashTime;
 
     private float dashTimer;
@@ -74,11 +74,16 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallJump();
         ProcessDash();
 
-        if (!isWallJumping && !isDashing)
+        if(!isWallJumping)
         {
             Flip();
+        }
+
+        if (!isDashing)
+        {
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
         }
+
     }
 
     private void Gravity()
@@ -97,8 +102,8 @@ public class PlayerMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext ctx)
     {
         Vector2 input = ctx.ReadValue<Vector2>();
-
-        if(input.magnitude > 1f)
+        
+        if (input.magnitude > 1f)
         {
             if(isFacingRight && input.x > 0f)
             {
@@ -162,6 +167,8 @@ public class PlayerMovement : MonoBehaviour
             isDashing = true;
             dashTimer = 0f;
             dashCount--;
+            horizontalMovement = 0f;
+            verticalMovement = 0f;
         }
     }
 
@@ -242,14 +249,8 @@ public class PlayerMovement : MonoBehaviour
         if(isDashing && dashTimer < dashTime)
         {
             dashTimer += Time.deltaTime;
-            if(dashDir.x > 0f && dashDir.y == 0f || dashDir.x < 0f && dashDir.y == 0f)
-            {
-                rb.linearVelocity = dashDir.normalized * (dashPower + 3f);
-            }
-            else
-            {
-                rb.linearVelocity = dashDir.normalized * dashPower;
-            }
+
+            rb.linearVelocity = dashDir * dashPower;
         }
         else if(dashTimer >= dashTime)
         {
@@ -291,9 +292,16 @@ public class PlayerMovement : MonoBehaviour
 
         if(input == Vector2.zero)
         {
-            return new Vector2(isFacingRight ? 1f : -1f, 0f).normalized;
+            return new Vector2(isFacingRight ? 1f : -1f, 0f);
         }
 
-        return input.normalized;
+        Vector2 normalized = input.normalized;
+
+        if(normalized.y > 0.9f)
+        {
+            normalized.y = 0.5f;
+        }
+
+        return normalized.normalized;
     }
 }
