@@ -63,10 +63,11 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 dashDir;
 
     //bug fixes:
-    //fix issue with dashing from ground and being able to dash after wall jumping.
-    //fix issue with not being able to move quickly in opposite direction to wall jump.
+    //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
     //working on:
     //implementing better dash mechanics (hyperdash, dashjumping, etc)
+    //more rooms/story
+    //wallholding/climbing
 
     void Update()
     {
@@ -80,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallSlide();
         ProcessWallJump();
         ProcessDash();
-
+        Debug.Log(WallCheck());
         if(!isWallJumping && !isDashing)
         {
             Flip();
@@ -132,31 +133,18 @@ public class PlayerMovement : MonoBehaviour
     public void Jump(InputAction.CallbackContext ctx)
     {
 
-        if (ctx.performed && (jumpsRemaining > 0 || isDashing))
+        if (ctx.performed && (jumpsRemaining > 0))
         {
-            Vector2 velocity = rb.linearVelocity;
-
-            if(preserveMomentumFromDash)
-            {
-                velocity.y = jumpPower * 0.75f;
-                velocity.x = dashDir.x * dashSpeed;
-            }
-            else
-            {
-                velocity.y = jumpPower;
-            }
-            rb.linearVelocity = velocity;
-
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             hangTimer = jumpHangTimer;
             jumpsRemaining--;
-            preserveMomentumFromDash = false;
         }
         else if (ctx.canceled && rb.linearVelocity.y > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
         }
 
-        if (ctx.performed && wallJumpTimer > 0f)
+        if (ctx.performed && wallJumpTimer > 0f && !isGrounded)
         {
             isWallJumping = true;
             rb.linearVelocity = new Vector2(wallJumpDir * wallJumpPower.x, wallJumpPower.y);
@@ -288,7 +276,6 @@ public class PlayerMovement : MonoBehaviour
     {
         isDashing = false;
         dashTimer = 0f;
-        preserveMomentumFromDash = true;
         dashDir = Vector2.zero;
         rb.gravityScale = baseGravity;
     }
