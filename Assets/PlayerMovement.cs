@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Gravity")]
     public float baseGravity = 2f;
-    public float maxFallSpeed = 18f;
+    public float maxFallSpeed = 10f;
     public float fallSpeedMultiplier = 2f;
     
 
@@ -81,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallSlide();
         ProcessWallJump();
         ProcessDash();
-        Debug.Log(WallCheck());
         if(!isWallJumping && !isDashing)
         {
             Flip();
@@ -133,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
     public void Jump(InputAction.CallbackContext ctx)
     {
 
-        if (ctx.performed && (jumpsRemaining > 0))
+        if (ctx.performed && (jumpsRemaining > 0) || isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             hangTimer = jumpHangTimer;
