@@ -57,13 +57,18 @@ public class PlayerMovement : MonoBehaviour
     private bool canDash;
     public float dashTime = 0.2f;
     public float dashDistance = 2.57f;
-    private bool preserveMomentumFromDash = false;
-
     private float dashTimer;
     public Vector2 dashDir;
 
+    [Header("WallClimbing")]
+    private bool isWallClimbing;
+    private float wallClimbSpeed = 3f;
+    private float wallClimbTimer = 0f;
+    private float wallClimbTime = 5f;
+
     //bug fixes:
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
+    //fix jumping rapidly causes a random large jump, maybe something to do with hang timer.
     //working on:
     //implementing better dash mechanics (hyperdash, dashjumping, etc)
     //more rooms/story
@@ -81,11 +86,13 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallSlide();
         ProcessWallJump();
         ProcessDash();
+        ProcessWallclimb();
         if(!isWallJumping && !isDashing)
         {
             Flip();
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
         }
+        justJumped = false;
     }
 
     private void Gravity()
@@ -137,10 +144,15 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             hangTimer = jumpHangTimer;
             jumpsRemaining--;
+            justJumped = true;
         }
-        else if (ctx.canceled && rb.linearVelocity.y > 0f)
+        else if (ctx.canceled)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            if (justJumped || rb.linearVelocity.y > 0f)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            }
+            justJumped = false;
         }
 
         if (ctx.performed && wallJumpTimer > 0f && !isGrounded)
@@ -176,6 +188,23 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = 0f;
             rb.linearVelocity = Vector2.zero;
             dashCount--;
+        }
+    }
+
+    public void WallClimb(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed && WallCheck() && !isGrounded)
+        {
+            isWallClimbing = true;
+            wallClimbTimer = wallClimbTime;
+            rb.gravityScale = 0f;
+            Debug.Log("ts is working");
+        }
+        else if(ctx.canceled)
+        {
+            isWallClimbing = false;
+            wallClimbTimer = 0f;
+            rb.gravityScale = baseGravity;
         }
     }
 
@@ -226,7 +255,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessWallSlide()
     {
-        if(!isGrounded && WallCheck() && horizontalMovement != 0)
+        if(!isGrounded && WallCheck() && horizontalMovement != 0 && !isWallClimbing)
         {
             isWallSliding = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -wallSlideSpeed));
@@ -288,5 +317,23 @@ public class PlayerMovement : MonoBehaviour
         }
         canDash = false;
         return false;
+    }
+
+    private void ProcessWallclimb()
+    {
+        if (!isWallClimbing) return;
+
+        if (wallClimbTimer > 0f)
+        {
+            wallClimbTimer -= Time.deltaTime;
+            float input = verticalMovement;
+            rb.linearVelocity = new Vector2(0f, input * wallClimbSpeed);
+        }
+        else
+        {
+            isWallClimbing = false;
+            wallClimbTimer = 0f;
+            rb.gravityScale = baseGravity;
+        }
     }
 }
