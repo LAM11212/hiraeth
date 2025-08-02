@@ -200,7 +200,6 @@ public class PlayerMovement : MonoBehaviour
             isWallClimbing = true;
             wallClimbTimer = wallClimbTime;
             rb.gravityScale = 0f;
-            Debug.Log("ts is working");
         }
         else if(ctx.canceled)
         {
