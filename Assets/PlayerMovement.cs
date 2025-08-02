@@ -72,7 +72,8 @@ public class PlayerMovement : MonoBehaviour
     //working on:
     //implementing better dash mechanics (hyperdash, dashjumping, etc)
     //more rooms/story
-    //wallholding/climbing
+    //wallclimbing has been added but i might make it so that the player doesnt slide on walls while holding, i kinda like the slide tho idk...
+    //desperately need cutscene/dialogue stuff for story... i hate GUI design so much.
 
     void Update()
     {
@@ -323,7 +324,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isWallClimbing) return;
 
-        if (wallClimbTimer > 0f)
+        if (wallClimbTimer > 0f && WallCheck())
         {
             wallClimbTimer -= Time.deltaTime;
             float input = verticalMovement;
