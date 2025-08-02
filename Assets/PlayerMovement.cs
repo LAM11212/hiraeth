@@ -88,6 +88,7 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallJump();
         ProcessDash();
         ProcessWallclimb();
+
         if(!isWallJumping && !isDashing)
         {
             Flip();
