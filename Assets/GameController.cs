@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     Vector2 startPos;
+    private bool justSetNewSpawn;
     void Start()
     {
         startPos = transform.position;
@@ -14,10 +15,29 @@ public class GameController : MonoBehaviour
         {
             Respawn();
         }
+        else if(collision.CompareTag("SpawnPoint"))
+        {
+            SetNewSpawn();
+            justSetNewSpawn = true;
+        }
     }
 
-    private void Respawn()
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("SpawnPoint"))
+        {
+            justSetNewSpawn = false;
+        }
+    }
+
+        private void Respawn()
     {
         transform.position = startPos;
+    }
+
+    private void SetNewSpawn()
+    {
+        if (justSetNewSpawn) return;
+        startPos = transform.position;
     }
 }
