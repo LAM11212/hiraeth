@@ -66,10 +66,15 @@ public class PlayerMovement : MonoBehaviour
     private float wallClimbTimer = 0f;
     private float wallClimbTime = 5f;
 
+    [Header("Interaction Logic")]
+    private IInteractable currentInteractable;
+    public LayerMask interactLayer;
+
     //bug fixes:
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
     //fix jumping rapidly causes a random large jump, maybe something to do with hang timer.
     //working on:
+    //art for UI and dialogue boxes.
     //implementing better dash mechanics (hyperdash, dashjumping, etc)
     //more rooms/story
     //wallclimbing has been added but i might make it so that the player doesnt slide on walls while holding, i kinda like the slide tho idk...
@@ -88,8 +93,9 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallJump();
         ProcessDash();
         ProcessWallclimb();
+        CheckForInteractable();
 
-        if(!isWallJumping && !isDashing)
+        if (!isWallJumping && !isDashing)
         {
             Flip();
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
@@ -206,6 +212,14 @@ public class PlayerMovement : MonoBehaviour
             isWallClimbing = false;
             wallClimbTimer = 0f;
             rb.gravityScale = baseGravity;
+        }
+    }
+
+    public void Interact(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+        {
+            TryInteract();
         }
     }
 
@@ -335,6 +349,27 @@ public class PlayerMovement : MonoBehaviour
             isWallClimbing = false;
             wallClimbTimer = 0f;
             rb.gravityScale = baseGravity;
+        }
+    }
+
+    private void CheckForInteractable()
+    {
+        Collider2D hit = Physics2D.OverlapCircle(transform.position, 1f, interactLayer);
+        if(hit != null)
+        {
+            currentInteractable = hit.GetComponent<IInteractable>();
+        }
+        else
+        {
+            currentInteractable = null;
+        }
+    }
+
+    private void TryInteract()
+    {
+        if(currentInteractable != null && currentInteractable.CanInteract())
+        {
+            currentInteractable.Interact();
         }
     }
 }
