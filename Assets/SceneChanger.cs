@@ -1,13 +1,12 @@
-using Unity.Cinemachine;
 using UnityEngine;
 
-public class SceneManager : MonoBehaviour
+public class SceneChanger : MonoBehaviour
 {
     public GameObject virtualCam;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player") && !collision.isTrigger)
+        if (collision.CompareTag("Player") && !collision.isTrigger)
         {
             virtualCam.SetActive(true);
         }

@@ -89,4 +89,9 @@ public class InteractableObject : MonoBehaviour, IInteractable
         return isDialogueActive;
     }
 
+    public void OnYesButtonPressed()
+    {
+        SceneController.instance.NextLevel();
+    }
+
 }
