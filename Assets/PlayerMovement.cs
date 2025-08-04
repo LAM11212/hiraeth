@@ -66,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
     private const float wallClimbSpeed = 3f;
     private float wallClimbTimer = 0f;
     private const float wallClimbTime = 3f;
+    private float wallClimbCooldownTimer = 0f;
+    public float wallClimbCooldown = 10f;
 
     [Header("Interaction Logic")]
     private IInteractable currentInteractable;
@@ -106,6 +108,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Gravity()
     {
+        if (isWallClimbing || isDashing || isWallJumping) return;
+
         if(rb.linearVelocity.y < 0)
         {
             rb.gravityScale = baseGravity * fallSpeedMultiplier;
@@ -222,7 +226,11 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = true;
             hangTimer = jumpHangTimer;
-
+            if(!WallCheck())
+            {
+                wallClimbCooldownTimer = 0f;
+            }
+            
             if(!isDashing)
             {
                 jumpsRemaining = 1;
@@ -333,6 +341,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessWallclimb()
     {
+
+        if(wallClimbCooldownTimer > 0f)
+        {
+            wallClimbCooldownTimer -= Time.deltaTime;
+        }
+
+        if(wallClimbCooldownTimer > 0f)
+        {
+            isWallClimbing = false;
+            return;
+        }
+
         if(wantsToWallClimb && WallCheck() && !isGrounded)
         {
             if(!isWallClimbing)
@@ -353,6 +373,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 isWallClimbing = false;
                 rb.gravityScale = baseGravity;
+                wallClimbCooldownTimer = wallClimbCooldown;
             }
         }
         else if(isWallClimbing)
