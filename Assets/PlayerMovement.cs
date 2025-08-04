@@ -62,9 +62,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("WallClimbing")]
     private bool isWallClimbing;
-    private float wallClimbSpeed = 3f;
+    private bool wantsToWallClimb = false;
+    private const float wallClimbSpeed = 3f;
     private float wallClimbTimer = 0f;
-    private float wallClimbTime = 5f;
+    private const float wallClimbTime = 3f;
 
     [Header("Interaction Logic")]
     private IInteractable currentInteractable;
@@ -95,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
         ProcessWallclimb();
         CheckForInteractable();
 
-        if (!isWallJumping && !isDashing)
+        if (!isWallJumping && !isDashing && !isWallClimbing)
         {
             Flip();
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
@@ -201,18 +202,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void WallClimb(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed && WallCheck() && !isGrounded)
-        {
-            isWallClimbing = true;
-            wallClimbTimer = wallClimbTime;
-            rb.gravityScale = 0f;
-        }
-        else if(ctx.canceled)
-        {
-            isWallClimbing = false;
-            wallClimbTimer = 0f;
-            rb.gravityScale = baseGravity;
-        }
+        if (ctx.performed) wantsToWallClimb = true;
+        else if(ctx.canceled) wantsToWallClimb = false;
     }
 
     public void Interact(InputAction.CallbackContext ctx)
@@ -270,6 +261,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessWallSlide()
     {
+        if(isWallClimbing)
+        {
+            isWallSliding = false;
+            return;
+        }
+
         if(!isGrounded && WallCheck() && horizontalMovement != 0 && !isWallClimbing)
         {
             isWallSliding = true;
@@ -336,19 +333,33 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessWallclimb()
     {
-        if (!isWallClimbing) return;
-
-        if (wallClimbTimer > 0f && WallCheck())
+        if(wantsToWallClimb && WallCheck() && !isGrounded)
         {
-            wallClimbTimer -= Time.deltaTime;
-            float input = verticalMovement;
-            rb.linearVelocity = new Vector2(0f, input * wallClimbSpeed);
+            if(!isWallClimbing)
+            {
+                isWallClimbing = true;
+                wallClimbTimer = wallClimbTime;
+                rb.gravityScale = 0f;
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+            }
+
+            if (wallClimbTimer > 0f)
+            {
+                wallClimbTimer -= Time.deltaTime;
+                float input = verticalMovement;
+                rb.linearVelocity = new Vector2(0f, input * wallClimbSpeed);
+            }
+            else
+            {
+                isWallClimbing = false;
+                rb.gravityScale = baseGravity;
+            }
         }
-        else
+        else if(isWallClimbing)
         {
             isWallClimbing = false;
-            wallClimbTimer = 0f;
             rb.gravityScale = baseGravity;
+            wallClimbTimer = 0f;
         }
     }
 
