@@ -69,6 +69,9 @@ public class PlayerMovement : MonoBehaviour
     private float wallClimbCooldownTimer = 0f;
     public float wallClimbCooldown = 10f;
 
+    [Header("WallClimbJump")]
+    private bool justWallClimbJumped;
+
     [Header("Interaction Logic")]
     private IInteractable currentInteractable;
     public LayerMask interactLayer;
@@ -183,6 +186,20 @@ public class PlayerMovement : MonoBehaviour
             }
 
             Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f);
+        }
+
+        if (ctx.performed && isWallClimbing && !isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+            justWallClimbJumped = true;
+        }
+        else if (ctx.canceled)
+        {
+            if (justWallClimbJumped || rb.linearVelocity.y > 0f)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            }
+            justWallClimbJumped = false;
         }
     }
 
