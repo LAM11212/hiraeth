@@ -111,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Gravity()
     {
-        if (isWallClimbing || isDashing || isWallJumping) return;
+        if (isWallClimbing || isDashing || isWallJumping || justWallClimbJumped) return;
 
         if(rb.linearVelocity.y < 0)
         {
@@ -155,25 +155,32 @@ public class PlayerMovement : MonoBehaviour
     public void Jump(InputAction.CallbackContext ctx)
     {
 
-        if (ctx.performed && (jumpsRemaining > 0) || isGrounded)
+        if (ctx.canceled)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
-            hangTimer = jumpHangTimer;
-            jumpsRemaining--;
-            justJumped = true;
-        }
-        else if (ctx.canceled)
-        {
-            if (justJumped || rb.linearVelocity.y > 0f)
+            if (justJumped || justWallClimbJumped || rb.linearVelocity.y > 0f)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
             }
             justJumped = false;
+            justWallClimbJumped = false;
+            return;
         }
 
-        if (ctx.performed && wallJumpTimer > 0f && !isGrounded)
+        if (ctx.performed && (jumpsRemaining > 0) || isGrounded)
+        {
+            rb.gravityScale = baseGravity;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
+            hangTimer = jumpHangTimer;
+            jumpsRemaining--;
+            justJumped = true;
+            Debug.Log("base Jump");
+            return;
+        }
+
+        if (ctx.performed && wallJumpTimer > 0f && !isGrounded && !isWallClimbing)
         {
             isWallJumping = true;
+            rb.gravityScale = baseGravity;
             rb.linearVelocity = new Vector2(wallJumpDir * wallJumpPower.x, wallJumpPower.y);
             wallJumpTimer = 0f;
 
@@ -186,20 +193,18 @@ public class PlayerMovement : MonoBehaviour
             }
 
             Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f);
+            Debug.Log("wall jumped");
+            return;
         }
 
-        if (ctx.performed && isWallClimbing && !isGrounded)
+        if(ctx.performed && isWallClimbing && !isGrounded)
         {
+            isWallClimbing = false;
+            rb.gravityScale = baseGravity;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             justWallClimbJumped = true;
-        }
-        else if (ctx.canceled)
-        {
-            if (justWallClimbJumped || rb.linearVelocity.y > 0f)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
-            }
-            justWallClimbJumped = false;
+            Debug.Log("wallclimb jumped");
+            return;
         }
     }
 
@@ -358,6 +363,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ProcessWallclimb()
     {
+        if (justWallClimbJumped) return;
 
         if(wallClimbCooldownTimer > 0f)
         {
