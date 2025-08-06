@@ -4,7 +4,6 @@ public class GameController : MonoBehaviour
 {
     Vector2 startPos;
     private bool justSetNewSpawn;
-    public PlayerMovement pm;
     void Start()
     {
         startPos = transform.position;
@@ -20,14 +19,6 @@ public class GameController : MonoBehaviour
         {
             SetNewSpawn();
             justSetNewSpawn = true;
-        }
-        else if(collision.CompareTag("DashCrystal"))
-        {
-            if (pm.dashCount > 0) return;
-            else if (pm.dashCount <= 0)
-            {
-                pm.dashCount++;
-            }
         }
     }
 
