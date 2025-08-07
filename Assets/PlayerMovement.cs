@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    bool isFacingRight = true;
+    public bool isFacingRight = true;
     public Rigidbody2D rb;
     public float moveSpeed = 5f;
     float horizontalMovement;
@@ -76,6 +76,11 @@ public class PlayerMovement : MonoBehaviour
     private IInteractable currentInteractable;
     public LayerMask interactLayer;
 
+    [Header("Spring Movement")]
+    public bool bounceOverride = false;
+    private float bounceTime = 0.2f;
+    private float bounceTimer = 0f;
+
     //bug fixes:
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
     //fix jumping rapidly causes a random large jump, maybe something to do with hang timer.
@@ -88,6 +93,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if(bounceOverride)
+        {
+            bounceTimer += Time.deltaTime;
+            if(bounceTimer > bounceTime)
+            {
+                bounceOverride = false;
+                bounceTimer = 0f;
+            }
+            return;
+        }
+
         if(hangTimer > 0f)
         {
             hangTimer -= Time.deltaTime;
