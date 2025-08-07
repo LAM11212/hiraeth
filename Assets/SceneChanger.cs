@@ -1,14 +1,17 @@
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class SceneChanger : MonoBehaviour
 {
-    public GameObject virtualCam;
+    public CinemachineCamera virtualCam; 
+    public int activePriority = 20;
+    public int inactivePriority = 10;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && !collision.isTrigger)
         {
-            virtualCam.SetActive(true);
+            virtualCam.Priority = activePriority;
         }
     }
 
@@ -16,7 +19,7 @@ public class SceneChanger : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !collision.isTrigger)
         {
-            virtualCam.SetActive(false);
+            virtualCam.Priority = inactivePriority;
         }
     }
 }
