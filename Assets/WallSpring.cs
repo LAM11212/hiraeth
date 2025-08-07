@@ -14,7 +14,6 @@ public class WallSpring : MonoBehaviour
             if (pm != null && rb != null)
             {
                 pm.bounceOverride = true;
-                rb.linearVelocity = new Vector2(0f, 0f);
 
                 float direction = pm.isFacingRight ? -1f : 1f;
                 rb.AddForce(new Vector2(direction * springBounce, 0f), ForceMode2D.Impulse);
