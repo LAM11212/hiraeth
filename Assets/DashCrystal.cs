@@ -3,7 +3,7 @@ using UnityEngine;
 public class DashCrystal : MonoBehaviour
 {
     public float respawnTime = 5f;
-
+    private bool isCollected = false;
     private SpriteRenderer renderer;
     private Collider2D collider;
 
@@ -21,7 +21,7 @@ public class DashCrystal : MonoBehaviour
             pm.dashCount++;
             renderer.enabled = false;
             collider.enabled = false;
-
+            isCollected = true;
             Invoke(nameof(Respawn), respawnTime);
         }
     }
@@ -30,6 +30,7 @@ public class DashCrystal : MonoBehaviour
     {
         renderer.enabled = true;
         collider.enabled = true;
+        isCollected = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -43,5 +44,11 @@ public class DashCrystal : MonoBehaviour
             }
             
         }
+    }
+
+    public void ForceRespawn()
+    {
+        CancelInvoke();
+        Respawn();
     }
 }

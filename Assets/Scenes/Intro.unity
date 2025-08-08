@@ -12972,7 +12972,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 34
-    OrthographicSize: 4.3
+    OrthographicSize: 5.35
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -12999,7 +12999,7 @@ Transform:
   m_GameObject: {fileID: 363264091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1303033, y: -1.5199, z: -20}
+  m_LocalPosition: {x: -1.0825827, y: -1.4988999, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15755,7 +15755,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 4.3
+  orthographic size: 5.35
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -15780,7 +15780,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.69784456, y: 0.81654996, z: -10}
+  m_LocalPosition: {x: -0.2676982, y: 1.9622099, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19776,7 +19776,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c4769df6e2ae243a9d8381823b87c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virtualCam: {fileID: 1616844411}
+  virtualCam: {fileID: 1616844413}
+  activePriority: 20
+  inactivePriority: 10
 --- !u!1 &1109648964
 GameObject:
   m_ObjectHideFlags: 0
@@ -21556,6 +21558,7 @@ GameObject:
   - component: {fileID: 1297305815}
   - component: {fileID: 1297305813}
   - component: {fileID: 1297305816}
+  - component: {fileID: 1297305817}
   m_Layer: 2
   m_Name: Room2
   m_TagString: Untagged
@@ -21575,7 +21578,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c4769df6e2ae243a9d8381823b87c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virtualCam: {fileID: 363264091}
+  virtualCam: {fileID: 363264094}
+  activePriority: 20
+  inactivePriority: 10
 --- !u!4 &1297305815
 Transform:
   m_ObjectHideFlags: 0
@@ -21646,6 +21651,21 @@ PolygonCollider2D:
       - {x: 5.0194807, y: -1.1749045}
       - {x: 5.0240235, y: 0.31712988}
   m_UseDelaunayMesh: 0
+--- !u!114 &1297305817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297305812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73c4769df6e2ae243a9d8381823b87c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCam: {fileID: 363264094}
+  activePriority: 20
+  inactivePriority: 10
 --- !u!1 &1355460212
 GameObject:
   m_ObjectHideFlags: 0
@@ -21758,6 +21778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f3674de4e14a6419a728115b9f2d56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFacingRight: 1
   rb: {fileID: 1481006211}
   moveSpeed: 5
   jumpHangTimer: 0.1
@@ -21780,13 +21801,16 @@ MonoBehaviour:
     m_Bits: 64
   wallJumpTime: 0.4
   wallJumpPower: {x: 4.5, y: 7.3}
+  dashCount: 1
   dashSpeed: 8
   dashTime: 0.2
   dashDistance: 2.57
   dashDir: {x: 0, y: 0}
+  wallClimbCooldown: 10
   interactLayer:
     serializedVersion: 2
     m_Bits: 512
+  bounceOverride: 0
 --- !u!114 &1481006209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22221,7 +22245,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 34
-    OrthographicSize: 4.3
+    OrthographicSize: 5.35
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -22248,7 +22272,7 @@ Transform:
   m_GameObject: {fileID: 1616844411}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.453934, y: 0.72972053, z: -20}
+  m_LocalPosition: {x: 11.408346, y: 1.1497204, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

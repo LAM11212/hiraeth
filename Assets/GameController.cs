@@ -4,9 +4,11 @@ public class GameController : MonoBehaviour
 {
     Vector2 startPos;
     private bool justSetNewSpawn;
+    private DashCrystal[] crystals;
     void Start()
     {
         startPos = transform.position;
+        crystals = Object.FindObjectsByType<DashCrystal>(FindObjectsSortMode.None);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -33,6 +35,10 @@ public class GameController : MonoBehaviour
         private void Respawn()
     {
         transform.position = startPos;
+        foreach(DashCrystal crystal in crystals)
+        {
+            crystal.ForceRespawn();
+        }
     }
 
     private void SetNewSpawn()
