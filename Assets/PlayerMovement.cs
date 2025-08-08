@@ -22,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
     public float jumpCutMultiplier = 0.3f;
     public int jumpsRemaining = 1;
     
-
     [Header("GroundCheck")]
     private bool justJumped;
     private bool isGrounded;
@@ -189,7 +188,6 @@ public class PlayerMovement : MonoBehaviour
             hangTimer = jumpHangTimer;
             jumpsRemaining--;
             justJumped = true;
-            Debug.Log("base Jump");
             return;
         }
 
@@ -209,7 +207,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
             Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f);
-            Debug.Log("wall jumped");
             return;
         }
 
@@ -219,7 +216,6 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = baseGravity;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             justWallClimbJumped = true;
-            Debug.Log("wallclimb jumped");
             return;
         }
     }
