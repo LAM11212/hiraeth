@@ -19,6 +19,7 @@ public class DashCrystal : MonoBehaviour
         else if(pm.dashCount <= 0)
         {
             pm.dashCount++;
+            pm.wallClimbTimer = 3f;
             renderer.enabled = false;
             collider.enabled = false;
             isCollected = true;

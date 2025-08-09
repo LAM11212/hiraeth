@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isWallClimbing;
     private bool wantsToWallClimb = false;
     private const float wallClimbSpeed = 3f;
-    private float wallClimbTimer = 0f;
+    public float wallClimbTimer = 0f;
     private const float wallClimbTime = 3f;
     private float wallClimbCooldownTimer = 0f;
     public float wallClimbCooldown = 10f;
