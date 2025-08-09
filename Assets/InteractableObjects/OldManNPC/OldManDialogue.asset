@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0800cd9d9e7384da3732406d1358da, type: 3}
+  m_Name: OldManDialogue
+  m_EditorClassIdentifier: 
+  itemName: Old Man
+  dialogueLines:
+  - It's so quiet up here at night...
+  - It can be so refreshing to leave everything and everyone behind for the comfort
+    of the woods
+  - However, you must be careful to not lose yourself completely here...
+  - I've seen too many young men come out here in search of something or other
+  - They all come to the same conclusion, the answer is not a hut in the woods...
+  autoProgressLines: 0101010101
+  autoProgressDelay: 1.5
+  typingSpeed: 0.05

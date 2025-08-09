@@ -7,6 +7,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
     public ItemDialogue dialogueData;
     public GameObject dialoguePanel;
     public TMP_Text dialogueText;
+    public TMP_Text NameText;
 
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
@@ -31,6 +32,8 @@ public class InteractableObject : MonoBehaviour, IInteractable
 
     private void StartDialogue()
     {
+        if(NameText != null)
+            NameText.SetText(dialogueData.itemName);
         isDialogueActive = true;
         dialogueIndex = 0;
 
