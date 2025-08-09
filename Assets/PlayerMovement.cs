@@ -85,11 +85,7 @@ public class PlayerMovement : MonoBehaviour
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
     //fix jumping rapidly causes a random large jump, maybe something to do with hang timer.
     //working on:
-    //art for UI and dialogue boxes.
-    //implementing better dash mechanics (hyperdash, dashjumping, etc)
-    //more rooms/story
-    //wallclimbing has been added but i might make it so that the player doesnt slide on walls while holding, i kinda like the slide tho idk...
-    //desperately need cutscene/dialogue stuff for story... i hate GUI design so much.
+    //MAIN OBJ IS SPRITES/ANIMATIONS
 
     void Update()
     {
@@ -261,7 +257,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = true;
             hangTimer = jumpHangTimer;
-            if(!WallCheck())
+            wallClimbTimer = wallClimbTime;
+            if (!WallCheck())
             {
                 wallClimbCooldownTimer = 0f;
             }
@@ -394,7 +391,6 @@ public class PlayerMovement : MonoBehaviour
             if(!isWallClimbing)
             {
                 isWallClimbing = true;
-                wallClimbTimer = wallClimbTime;
                 rb.gravityScale = 0f;
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             }
