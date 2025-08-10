@@ -119,8 +119,13 @@ public class PlayerMovement : MonoBehaviour
             Flip();
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
         }
+
         justJumped = false;
+
+        animator.SetBool("IsGrounded", isGrounded);
+        animator.SetFloat("yVelocity", rb.linearVelocity.y);
         animator.SetFloat("magnitude", rb.linearVelocity.magnitude);
+        //animator.SetBool("isWallSliding", isWallSliding);
     }
 
     private void Gravity()
@@ -186,6 +191,7 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             hangTimer = jumpHangTimer;
             jumpsRemaining--;
+            animator.SetTrigger("Jump");
             justJumped = true;
             return;
         }
@@ -196,7 +202,6 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = baseGravity;
             rb.linearVelocity = new Vector2(wallJumpDir * wallJumpPower.x, wallJumpPower.y);
             wallJumpTimer = 0f;
-
             if (transform.localScale.x != wallJumpDir)
             {
                 isFacingRight = !isFacingRight;
