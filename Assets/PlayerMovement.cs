@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")]
     public bool isFacingRight = true;
     public Rigidbody2D rb;
+    public Animator animator;
     public float moveSpeed = 5f;
     float horizontalMovement;
     float verticalMovement;
@@ -119,6 +120,7 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(horizontalMovement * moveSpeed, rb.linearVelocity.y);
         }
         justJumped = false;
+        animator.SetFloat("magnitude", rb.linearVelocity.magnitude);
     }
 
     private void Gravity()
