@@ -20,6 +20,7 @@ public class DashCrystal : MonoBehaviour
         {
             pm.dashCount++;
             pm.wallClimbTimer = 3f;
+            pm.wallClimbJumpsRemaining = 3;
             renderer.enabled = false;
             collider.enabled = false;
             isCollected = true;

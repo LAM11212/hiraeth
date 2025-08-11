@@ -71,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("WallClimbJump")]
     private bool justWallClimbJumped;
+    public int wallClimbJumpsRemaining = 3; 
 
     [Header("Interaction Logic")]
     private IInteractable currentInteractable;
@@ -216,10 +217,16 @@ public class PlayerMovement : MonoBehaviour
 
         if(ctx.performed && isWallClimbing && !isGrounded)
         {
+            if(wallClimbJumpsRemaining <= 0)
+            {
+                wallClimbTimer = 0f;
+                return;
+            }
             isWallClimbing = false;
             rb.gravityScale = baseGravity;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower);
             justWallClimbJumped = true;
+            wallClimbJumpsRemaining--;
             return;
         }
     }
@@ -262,9 +269,12 @@ public class PlayerMovement : MonoBehaviour
 
         if(grounded)
         {
+
             isGrounded = true;
             hangTimer = jumpHangTimer;
             wallClimbTimer = wallClimbTime;
+            wallClimbJumpsRemaining = 3;
+
             if (!WallCheck())
             {
                 wallClimbCooldownTimer = 0f;
