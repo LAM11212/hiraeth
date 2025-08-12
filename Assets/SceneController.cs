@@ -25,6 +25,13 @@ public class SceneController : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        SceneManager.LoadSceneAsync(sceneName);
+        if(!string.IsNullOrEmpty(sceneToLoad))
+        {
+            SceneManager.LoadSceneAsync(sceneToLoad);
+        }
+        else
+        {
+            Debug.LogError("SceneController: sceneToLoad is emtpy or null");
+        }
     }
 }
