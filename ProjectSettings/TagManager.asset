@@ -8,6 +8,7 @@ TagManager:
   - LevelBound
   - SpawnPoint
   - DashCrystal
+  - CutscenePlayer
   layers:
   - Default
   - TransparentFX
