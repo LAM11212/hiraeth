@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6210724628746128160}
   - component: {fileID: 1629893267128356344}
   m_Layer: 10
-  m_Name: SphereThing_0
+  m_Name: Vertical
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

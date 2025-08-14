@@ -83,9 +83,7 @@ public class PlayerMovement : MonoBehaviour
     private float bounceTimer = 0f;
 
     //bug fixes:
-    //fix issue with infinite wall climb due to wall climb timer not being reset properly after a jump.
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
-    //fix jumping rapidly causes a random large jump, maybe something to do with hang timer.
     //working on:
     //MAIN OBJ IS SPRITES/ANIMATIONS
 
