@@ -4,8 +4,9 @@ public class ObstacleMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
     public float moveSpeed = 2f;
-    public float moveDistaqnce = 10f;
+    public float moveDistance = 10f;
     public float startY;
+    public bool down;
 
     public void Awake()
     {
@@ -15,8 +16,16 @@ public class ObstacleMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float newY = startY + Mathf.PingPong(Time.time * moveSpeed, moveDistaqnce);
-        rb.MovePosition(new Vector2(rb.position.x, newY));
+        if(down)
+        {
+            float newY = startY - Mathf.PingPong(Time.time * moveSpeed, moveDistance);
+            rb.MovePosition(new Vector2(rb.position.x, newY));
+        }
+        else if(!down)
+        {
+            float newY = startY + Mathf.PingPong(Time.time * moveSpeed, moveDistance);
+            rb.MovePosition(new Vector2(rb.position.x, newY));
+        }
     }
 }
 

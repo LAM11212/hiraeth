@@ -5,10 +5,12 @@ public class GameController : MonoBehaviour
     Vector2 startPos;
     private bool justSetNewSpawn;
     private DashCrystal[] crystals;
+    private FireCrystal[] fireCrystals;
     void Start()
     {
         startPos = transform.position;
         crystals = Object.FindObjectsByType<DashCrystal>(FindObjectsSortMode.None);
+        fireCrystals = Object.FindObjectsByType<FireCrystal>(FindObjectsSortMode.None);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,12 +34,17 @@ public class GameController : MonoBehaviour
         }
     }
 
-        private void Respawn()
+    public void Respawn()
     {
         transform.position = startPos;
         foreach(DashCrystal crystal in crystals)
         {
             crystal.ForceRespawn();
+        }
+
+        foreach(FireCrystal fCrystal in fireCrystals)
+        {
+            fCrystal.ForceRespawn();
         }
     }
 

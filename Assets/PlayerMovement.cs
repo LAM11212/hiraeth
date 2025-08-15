@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Settings")]
     [SerializeField] private float jumpHangTimer = 0.1f;
     private float hangTimer = 0f;
-    public float jumpPower = 10f;
+    public float jumpPower = 8.2f;
     public float jumpCutMultiplier = 0.3f;
     public int jumpsRemaining = 1;
     
