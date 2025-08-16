@@ -82,6 +82,9 @@ public class PlayerMovement : MonoBehaviour
     private float bounceTime = 0.2f;
     private float bounceTimer = 0f;
 
+    //Fire/water crystal stuff
+    public bool isMarkedForDeath = false;
+
     //bug fixes:
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
     //working on:

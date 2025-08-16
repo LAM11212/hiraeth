@@ -6,11 +6,13 @@ public class GameController : MonoBehaviour
     private bool justSetNewSpawn;
     private DashCrystal[] crystals;
     private FireCrystal[] fireCrystals;
+    private WaterCrystal[] waterCrystals;
     void Start()
     {
         startPos = transform.position;
         crystals = Object.FindObjectsByType<DashCrystal>(FindObjectsSortMode.None);
         fireCrystals = Object.FindObjectsByType<FireCrystal>(FindObjectsSortMode.None);
+        waterCrystals = Object.FindObjectsByType<WaterCrystal>(FindObjectsSortMode.None);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -45,6 +47,11 @@ public class GameController : MonoBehaviour
         foreach(FireCrystal fCrystal in fireCrystals)
         {
             fCrystal.ForceRespawn();
+        }
+
+        foreach(WaterCrystal wCrystal in waterCrystals)
+        {
+            wCrystal.ForceRespawn();
         }
     }
 

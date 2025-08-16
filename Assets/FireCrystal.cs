@@ -33,6 +33,7 @@ public class FireCrystal : MonoBehaviour
         pm.dashDistance += 2f;
         renderer.enabled = false;
         collider.enabled = false;
+        pm.isMarkedForDeath = true;
         Invoke(nameof(Explode), explodeTimer);
         Invoke(nameof(Respawn), respawnTime);
         
@@ -57,6 +58,7 @@ public class FireCrystal : MonoBehaviour
 
     private void Explode()
     {
+        if(!pm.isMarkedForDeath) return;
         GameController gc = pm.GetComponent<GameController>();
         if(gc != null)
         {

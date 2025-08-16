@@ -9,6 +9,7 @@ TagManager:
   - SpawnPoint
   - DashCrystal
   - CutscenePlayer
+  - FireCrystal
   layers:
   - Default
   - TransparentFX
