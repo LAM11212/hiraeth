@@ -9,16 +9,13 @@ public class GameController : MonoBehaviour
     private WaterCrystal[] waterCrystals;
     private PlayerMovement pm;
 
-    private void Awake()
-    {
-        pm = GetComponent<PlayerMovement>();
-    }
     void Start()
     {
         startPos = transform.position;
         crystals = Object.FindObjectsByType<DashCrystal>(FindObjectsSortMode.None);
         fireCrystals = Object.FindObjectsByType<FireCrystal>(FindObjectsSortMode.None);
         waterCrystals = Object.FindObjectsByType<WaterCrystal>(FindObjectsSortMode.None);
+        pm = Object.FindFirstObjectByType<PlayerMovement>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -7,6 +7,7 @@ public class HorizObstacleMovement : MonoBehaviour
     public float moveSpeed = 2f;
     public float moveDistance = 10f;
     public float startX;
+    public bool right;
 
     public void Awake()
     {
@@ -16,7 +17,16 @@ public class HorizObstacleMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float newX = startX + Mathf.PingPong(Time.time * moveSpeed, moveDistance);
-        rb.MovePosition(new Vector2(newX, rb.position.y));
+        if(right)
+        {
+            float newX = startX + Mathf.PingPong(Time.time * moveSpeed, moveDistance);
+            rb.MovePosition(new Vector2(newX, rb.position.y));
+        }
+        else if(!right)
+        {
+            float newX = startX - Mathf.PingPong(Time.time * moveSpeed, moveDistance);
+            rb.MovePosition(new Vector2(newX, rb.position.y));
+        }
+        
     }
 }
