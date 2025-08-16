@@ -41,7 +41,7 @@ public class WaterCrystal : MonoBehaviour
         }
     }
 
-    private void ForceRespawn()
+    public void ForceRespawn()
     {
         CancelInvoke();
         Respawn();
