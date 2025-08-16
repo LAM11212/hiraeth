@@ -31,6 +31,8 @@ public class FireCrystal : MonoBehaviour
         pm.moveSpeed += 2f;
         pm.jumpPower += 2f;
         pm.dashDistance += 2f;
+        pm.wallClimbTimer = 3f;
+        pm.wallClimbJumpsRemaining = 3;
         renderer.enabled = false;
         collider.enabled = false;
         pm.isMarkedForDeath = true;

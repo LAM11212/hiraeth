@@ -10,6 +10,7 @@ TagManager:
   - DashCrystal
   - CutscenePlayer
   - FireCrystal
+  - WaterCrystal
   layers:
   - Default
   - TransparentFX

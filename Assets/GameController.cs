@@ -7,6 +7,12 @@ public class GameController : MonoBehaviour
     private DashCrystal[] crystals;
     private FireCrystal[] fireCrystals;
     private WaterCrystal[] waterCrystals;
+    private PlayerMovement pm;
+
+    private void Awake()
+    {
+        pm = GetComponent<PlayerMovement>();
+    }
     void Start()
     {
         startPos = transform.position;
@@ -38,6 +44,13 @@ public class GameController : MonoBehaviour
 
     public void Respawn()
     {
+        if (pm.isMarkedForDeath)
+        {
+            pm.isMarkedForDeath = false;
+            pm.moveSpeed = 5f;
+            pm.jumpPower = 8.2f;
+            pm.dashDistance = 2.57f;
+        }
         transform.position = startPos;
         foreach(DashCrystal crystal in crystals)
         {
