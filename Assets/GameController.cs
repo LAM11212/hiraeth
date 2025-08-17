@@ -2,72 +2,78 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+
+    public static GameController instance;
+
+    [Header("Player Settings")]
+    [SerializeField] private PlayerMovement pm;
+
     Vector2 startPos;
     private bool justSetNewSpawn;
+
     private DashCrystal[] crystals;
     private FireCrystal[] fireCrystals;
     private WaterCrystal[] waterCrystals;
-    private PlayerMovement pm;
 
+    private float defaultMoveSpeed;
+    private float defaultJumpPower;
+    private float defaultDashDistance;
+
+
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
-        startPos = transform.position;
+        if (pm == null) 
+            pm = Object.FindFirstObjectByType<PlayerMovement>();
+
+        startPos = pm.transform.position;
+        defaultMoveSpeed = pm.moveSpeed;
+        defaultJumpPower = pm.jumpPower;
+        defaultDashDistance = pm.dashDistance;
+
         crystals = Object.FindObjectsByType<DashCrystal>(FindObjectsSortMode.None);
         fireCrystals = Object.FindObjectsByType<FireCrystal>(FindObjectsSortMode.None);
         waterCrystals = Object.FindObjectsByType<WaterCrystal>(FindObjectsSortMode.None);
-        pm = Object.FindFirstObjectByType<PlayerMovement>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag("LevelBound") || collision.CompareTag("Obstacle"))
-        {
-            Respawn();
-        }
-        else if(collision.CompareTag("SpawnPoint"))
-        {
-            SetNewSpawn();
-            justSetNewSpawn = true;
-        }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void PlayerRespawn()
     {
-        if (collision.CompareTag("SpawnPoint"))
-        {
-            justSetNewSpawn = false;
-        }
+        Respawn();
+        foreach (DashCrystal crystal in crystals) crystal.ForceRespawn();
+        foreach (FireCrystal fCrystal in fireCrystals) fCrystal.ForceRespawn();
+        foreach (WaterCrystal wCrystal in waterCrystals) wCrystal.ForceRespawn();
     }
 
     public void Respawn()
     {
-        if (pm.isMarkedForDeath)
-        {
-            pm.isMarkedForDeath = false;
-            pm.moveSpeed = 5f;
-            pm.jumpPower = 8.2f;
-            pm.dashDistance = 2.57f;
-        }
-        transform.position = startPos;
-        foreach(DashCrystal crystal in crystals)
-        {
-            crystal.ForceRespawn();
-        }
-
-        foreach(FireCrystal fCrystal in fireCrystals)
-        {
-            fCrystal.ForceRespawn();
-        }
-
-        foreach(WaterCrystal wCrystal in waterCrystals)
-        {
-            wCrystal.ForceRespawn();
-        }
+        pm.transform.position = startPos;
+        ResetPlayerStats();
+        pm.isMarkedForDeath = false;
+        
     }
 
-    private void SetNewSpawn()
+    public void SetNewSpawn()
     {
         if (justSetNewSpawn) return;
-        startPos = transform.position;
+        startPos = pm.transform.position;
+    }
+
+    private void ResetPlayerStats()
+    {
+        pm.moveSpeed = defaultMoveSpeed;
+        pm.jumpPower = defaultJumpPower;
+        pm.dashDistance = defaultDashDistance;
+    }
+
+    public void ClearSpawnFlag()
+    {
+        justSetNewSpawn = false;
     }
 }

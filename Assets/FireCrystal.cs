@@ -7,7 +7,8 @@ public class FireCrystal : MonoBehaviour
     public float respawnTime = 5f;
     private bool isCollected = false;
     private float explodeTimer = 5f;
-    [SerializeField] PlayerMovement pm;
+    [SerializeField] private GameController gc;
+    private PlayerMovement player;
 
     private void Awake()
     {
@@ -20,11 +21,15 @@ public class FireCrystal : MonoBehaviour
         explodeTimer = 5f;
         renderer.enabled = true;
         collider.enabled = true;
+        isCollected = false;
     }
 
     private void Collect(PlayerMovement pm)
     {
-        if(pm.dashCount <= 0)
+        if(isCollected) return;
+        isCollected = true;
+        player = pm;
+        if (pm.dashCount <= 0)
         {
             pm.dashCount++;
         }
@@ -45,6 +50,7 @@ public class FireCrystal : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
+            PlayerMovement pm = collision.GetComponent<PlayerMovement>();
             if(pm != null)
             {
                 Collect(pm);
@@ -60,14 +66,21 @@ public class FireCrystal : MonoBehaviour
 
     private void Explode()
     {
-        if(!pm.isMarkedForDeath) return;
-        GameController gc = pm.GetComponent<GameController>();
-        if(gc != null)
+        Debug.Log("Method called");
+        if(player != null && player.isMarkedForDeath)
         {
-            pm.moveSpeed = 5f;
-            pm.jumpPower = 8.2f;
-            pm.dashDistance = 2.57f;
-            gc.Respawn();
+            Debug.Log("First if crossed");
+            player.isMarkedForDeath = false;
+            if(gc != null)
+            {
+                Debug.Log("Second if crossed, check game controller script");
+                gc.PlayerRespawn();
+            }
         }
+    }
+
+    public void CancelExplode()
+    {
+        CancelInvoke(nameof(Explode));
     }
 }

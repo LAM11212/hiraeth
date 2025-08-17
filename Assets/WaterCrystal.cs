@@ -5,7 +5,6 @@ public class WaterCrystal : MonoBehaviour
     private SpriteRenderer renderer;
     private Collider2D collider;
     public float respawnTime = 5f;
-    [SerializeField] PlayerMovement pm;
 
     private void Awake()
     {
@@ -21,6 +20,9 @@ public class WaterCrystal : MonoBehaviour
         pm.moveSpeed = 5f;
         pm.jumpPower = 8.2f;
         pm.dashDistance = 2.57f;
+
+        FireCrystal[] fireCrystals = Object.FindObjectsByType<FireCrystal>(FindObjectsSortMode.None);
+        foreach (FireCrystal fc in fireCrystals) fc.CancelExplode();
         Invoke(nameof(Respawn), respawnTime);
     }
 
@@ -34,6 +36,7 @@ public class WaterCrystal : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
+            PlayerMovement pm = collision.GetComponent<PlayerMovement>();
             if (pm != null)
             {
                 Collect(pm);
