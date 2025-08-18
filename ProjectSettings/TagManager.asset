@@ -11,6 +11,7 @@ TagManager:
   - CutscenePlayer
   - FireCrystal
   - WaterCrystal
+  - Spikes
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Feet
   - Interactable
   - Obstacle
-  - 
+  - Spikes
   - 
   - 
   - 
