@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -22,29 +23,60 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
-        DontDestroyOnLoad(gameObject);
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     void Start()
     {
-        if (pm == null) 
+        if (pm == null || pm.Equals(null)) 
             pm = Object.FindFirstObjectByType<PlayerMovement>();
 
         startPos = pm.transform.position;
         defaultMoveSpeed = pm.moveSpeed;
         defaultJumpPower = pm.jumpPower;
         defaultDashDistance = pm.dashDistance;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        pm = Object.FindFirstObjectByType<PlayerMovement>();
+        if(pm != null)
+        {
+            startPos = pm.transform.position;
+        }
 
         crystals = Object.FindObjectsByType<DashCrystal>(FindObjectsSortMode.None);
         fireCrystals = Object.FindObjectsByType<FireCrystal>(FindObjectsSortMode.None);
         waterCrystals = Object.FindObjectsByType<WaterCrystal>(FindObjectsSortMode.None);
     }
-
-
     public void PlayerRespawn()
     {
+        if(pm == null)
+        {
+            pm = Object.FindFirstObjectByType<PlayerMovement>();
+            if(pm != null)
+            {
+                startPos = pm.transform.position;
+            }
+        }
         Respawn();
         foreach (DashCrystal crystal in crystals) crystal.ForceRespawn();
         foreach (FireCrystal fCrystal in fireCrystals) fCrystal.ForceRespawn();
