@@ -126,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetBool("IsGrounded", isGrounded);
         animator.SetFloat("yVelocity", rb.linearVelocity.y);
-        animator.SetFloat("magnitude", rb.linearVelocity.magnitude);
+        animator.SetFloat("magnitude", Mathf.Abs(rb.linearVelocity.x));
         //animator.SetBool("isWallSliding", isWallSliding);
     }
 
