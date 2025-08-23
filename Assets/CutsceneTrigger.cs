@@ -11,9 +11,20 @@ public class CutsceneTrigger : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
-            player.SetActive(false);
-            cutscenePlayer.SetActive(true);
-            scaryMadeline.SetActive(true);
+            if(player != null)
+            {
+                player.SetActive(false);
+            }
+
+            if(cutscenePlayer != null)
+            {
+                cutscenePlayer.SetActive(true);
+            }
+
+            if (scaryMadeline != null)
+            {
+                scaryMadeline.SetActive(true);
+            }
             cutsceneDirector.Play();
             Destroy(gameObject);
         }
