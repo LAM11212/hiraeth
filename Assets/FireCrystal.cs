@@ -66,14 +66,11 @@ public class FireCrystal : MonoBehaviour
 
     private void Explode()
     {
-        Debug.Log("Method called");
         if(player != null && player.isMarkedForDeath)
         {
-            Debug.Log("First if crossed");
             player.isMarkedForDeath = false;
             if(gc != null)
             {
-                Debug.Log("Second if crossed, check game controller script");
                 gc.PlayerRespawn();
             }
         }

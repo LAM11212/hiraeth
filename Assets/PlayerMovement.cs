@@ -85,6 +85,9 @@ public class PlayerMovement : MonoBehaviour
     //Fire/water crystal stuff
     public bool isMarkedForDeath = false;
 
+    [Header("Cutscene Movement")]
+    public bool autoInteract = false;
+
     //bug fixes:
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
     //working on:
@@ -115,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
         ProcessDash();
         ProcessWallclimb();
         CheckForInteractable();
+        AutoInteract();
 
         if (!isWallJumping && !isDashing && !isWallClimbing)
         {
@@ -259,6 +263,14 @@ public class PlayerMovement : MonoBehaviour
     public void Interact(InputAction.CallbackContext ctx)
     {
         if(ctx.performed)
+        {
+            TryInteract();
+        }
+    }
+
+    public void AutoInteract()
+    {
+        if(autoInteract)
         {
             TryInteract();
         }
