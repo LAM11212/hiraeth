@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Second_World.unity
     guid: cc7bdd5650bb5c04288c986958ae2a14
+  - enabled: 1
+    path: Assets/Scenes/Third_World.unity
+    guid: 73778519a53bad145846dde2d33ece74
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
