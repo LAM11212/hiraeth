@@ -4,47 +4,53 @@ using UnityEngine.Rendering.Universal;
 
 public class LightFlash : MonoBehaviour
 {
-    public float flashDuration = 5f;
-    public float flashInterval = 3f;
-    private float flashTimer;
+    public float fadeDuration = 2f;
+    public float lightDuration = 1f;
+    private bool isFlashing = false;
+    private float darkDuration = 2f;
     public Light2D light;
 
     private void Awake()
     {
         if (light != null)
             light.intensity = 0f;
-        flashTimer = flashInterval;
         
     }
 
     private void Update()
     {
-        flashTimer -= Time.deltaTime;
-        if (flashTimer <= 0f)
+        if (!isFlashing)
         {
             StartCoroutine(FlashLight());
-            flashTimer = 3f;
         }
     }
 
     private IEnumerator FlashLight()
     {
+        isFlashing = true;
         float t = 0f;
-        while (t < flashDuration)
+        while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            light.intensity = Mathf.Lerp(0f, 1f, t / flashDuration);
+            light.intensity = Mathf.Lerp(0f, 1f, t / fadeDuration);
             yield return null;
         }
+        light.intensity = 1f;
+
+        yield return new WaitForSeconds(lightDuration);
 
         t = 0f;
-        while (t < flashDuration)
+        while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            light.intensity = Mathf.Lerp(1f, 0f, t / flashDuration);
+            light.intensity = Mathf.Lerp(1f, 0f, t / fadeDuration);
             yield return null;
         }
 
         light.intensity = 0f;
+
+        yield return new WaitForSeconds(darkDuration);
+
+        isFlashing = false;
     }
 }
