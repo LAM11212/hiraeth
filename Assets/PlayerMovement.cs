@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
 
     //bug fixes:
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
+    //fix issue with wall climb jump not wall climbing again while holding jump button.
     //working on:
     //MAIN OBJ IS SPRITES/ANIMATIONS
 
