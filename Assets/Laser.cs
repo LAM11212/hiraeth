@@ -13,8 +13,6 @@ public class Laser : MonoBehaviour
     [Header("Laser Prefab")]
     public GameObject laserPrefab;
     public Transform firePoint;
-    //public Transform endPoint;
-    //public Transform startPoint;
 
     [Header("Warning Indicator")]
     public GameObject indicatorPrefab;
