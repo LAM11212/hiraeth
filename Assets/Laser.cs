@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 public class Laser : MonoBehaviour
@@ -23,9 +24,10 @@ public class Laser : MonoBehaviour
     private Animator animator;
 
     [Header("Laser attributes")]
-    public float laserLength = 10f;  // how far the laser extends
+    public float laserLength = 1.5f;  // how far the laser extends
     public float laserWidth = 0.5f;  // how fat the laser is (adjust hitbox if you change this value)
-    BoxCollider2D hitbox;
+    private BoxCollider2D hitbox;
+    public Light2D light;
 
     private void Start()
     {
@@ -34,12 +36,14 @@ public class Laser : MonoBehaviour
         hitbox = GetComponent<BoxCollider2D>();
         animator.SetTrigger("Idle");
         hitbox.enabled = false;
+        if (light != null)
+            light.intensity = 0f;
     }
 
     private void Update()
     {
         fireTimer -= Time.deltaTime;
-
+        
         if (fireTimer <= warningTime && activeIndicator == null)
         {
             ShowIndicator();
@@ -62,6 +66,7 @@ public class Laser : MonoBehaviour
         {
 
             GameObject laser = Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            light.intensity = 3f;
             hitbox.enabled = true;
             Vector3 scale = laser.transform.localScale;
             scale.y = laserLength;
@@ -82,6 +87,7 @@ public class Laser : MonoBehaviour
         yield return new WaitForSeconds(delay);
         hitbox.enabled = false;
         Destroy(obj);
+        light.intensity = 0f;
     }
 
 
@@ -90,7 +96,7 @@ public class Laser : MonoBehaviour
         if (indicatorPrefab && firePoint)
         {
             activeIndicator = Instantiate(indicatorPrefab, firePoint.position, firePoint.rotation);
-
+            light.intensity = 1f;
             Vector3 scale = activeIndicator.transform.localScale;
             scale.y = laserLength;
             scale.x = laserWidth;
@@ -109,9 +115,9 @@ public class Laser : MonoBehaviour
         if (firePoint == null) return;
 
         Gizmos.color = Color.red;
-
-        Vector3 start = firePoint.position;
-        Vector3 end = start + transform.up * laserLength;
+        Vector3 offset = new Vector3(0.0f, 3.0f, 0.0f);
+        Vector3 start = firePoint.position - offset;
+        Vector3 end = start + transform.up * (laserLength * 4f);
 
         Gizmos.DrawLine(start, end);
     }
