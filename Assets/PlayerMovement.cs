@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement Instance;
+
     [Header("Movement Settings")]
     public bool isFacingRight = true;
     public Rigidbody2D rb;
@@ -15,6 +17,9 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     float horizontalMovement;
     float verticalMovement;
+
+    [Header("Player State")]
+    public PlayerState currentState = PlayerState.Normal;
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpHangTimer = 0.1f;
@@ -94,12 +99,24 @@ public class PlayerMovement : MonoBehaviour
     //working on:
     //MAIN OBJ IS SPRITES/ANIMATIONS
 
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else
+        {
+             Destroy(gameObject);
+        }
+        rb = GetComponent<Rigidbody2D>();
+    }
     void Update()
     {
-        if(bounceOverride)
+
+        if (currentState != PlayerState.Normal) return;
+        if (bounceOverride)
         {
             bounceTimer += Time.deltaTime;
-            if(bounceTimer > bounceTime)
+            if (bounceTimer > bounceTime)
             {
                 bounceOverride = false;
                 bounceTimer = 0f;
@@ -107,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if(hangTimer > 0f)
+        if (hangTimer > 0f)
         {
             hangTimer -= Time.deltaTime;
         }
@@ -152,6 +169,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx)
     {
+        if (currentState != PlayerState.Normal) return;
         Vector2 input = ctx.ReadValue<Vector2>();
         
         if (input.magnitude > 1f)
@@ -180,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext ctx)
     {
-
+        if (currentState != PlayerState.Normal) return;
         if (ctx.canceled)
         {
             if (justJumped || justWallClimbJumped || rb.linearVelocity.y > 0f)
@@ -239,7 +257,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void Dash(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed && CanDash())
+        if (currentState != PlayerState.Normal) return;
+        if (ctx.performed && CanDash())
         {
             Vector2 input = new Vector2(horizontalMovement, verticalMovement);
 
@@ -466,5 +485,11 @@ public class PlayerMovement : MonoBehaviour
         {
             currentInteractable.Interact();
         }
+    }
+
+    public void SetState(PlayerState newState)
+    {
+        currentState = newState;
+        rb.linearVelocity = Vector2.zero;
     }
 }

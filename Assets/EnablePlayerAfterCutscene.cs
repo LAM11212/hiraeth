@@ -14,7 +14,7 @@ public class EnablePlayerAfterCutscene : MonoBehaviour
             EnablePlayer();
         }
     }
-    private void EnablePlayer()
+    public void EnablePlayer()
     {
         player.SetActive(true);
         wasEnabled = true;

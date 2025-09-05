@@ -85,6 +85,12 @@ public class InteractableObject : MonoBehaviour, IInteractable
         isDialogueActive = false;
         dialogueText.SetText("");
         dialoguePanel.SetActive(false);
+
+        CutsceneController cutscene = Object.FindFirstObjectByType<CutsceneController>();
+        if(cutscene != null)
+        {
+            cutscene.EndCutscene();
+        }
     }
 
     public bool IsDialogueActive()
