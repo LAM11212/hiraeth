@@ -119,4 +119,13 @@ public class Laser : MonoBehaviour
 
         Gizmos.DrawLine(start, end);
     }
+
+    public void ForceRespawn()
+    {
+        if(activeIndicator) Destroy(activeIndicator);
+        light.intensity = 0f;
+        fireTimer = fireInterval;
+        animator.SetTrigger("Idle");
+        hitbox.enabled = false;
+    }
 }
