@@ -125,7 +125,10 @@ public class Laser : MonoBehaviour
         if(activeIndicator) Destroy(activeIndicator);
         light.intensity = 0f;
         fireTimer = fireInterval;
-        animator.SetTrigger("Idle");
+        animator.ResetTrigger("Charging");
+        animator.ResetTrigger("Fire");
+        animator.ResetTrigger("Idle");
+        animator.Play("Idle", -1, 0f);
         hitbox.enabled = false;
     }
 }
