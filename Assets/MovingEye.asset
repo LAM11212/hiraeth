@@ -12,9 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
   m_Name: MovingEye
   m_EditorClassIdentifier: 
-  m_AnimatedSprites: []
-  m_MinSpeed: 1
-  m_MaxSpeed: 1
+  m_AnimatedSprites:
+  - {fileID: -8604255521605155848, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -163791681, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 812552451, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -1063320636, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 1920508868, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -1351540273, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -515748927, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -1758907333, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -1509272751, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -478061443, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -659800419, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 1909260115, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -1059916636, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -715368458, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -237271004, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -438286629, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 531581792, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -1294400086, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -1160280188, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 862203068, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 1668168041, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 1904933184, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -1699463687, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 416096516, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 1981713746, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: -275505713, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  - {fileID: 2044785461, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
+  m_MinSpeed: 3
+  m_MaxSpeed: 3
   m_AnimationStartTime: 0
   m_AnimationStartFrame: 0
   m_TileColliderType: 0
