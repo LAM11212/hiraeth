@@ -9,10 +9,12 @@ public class MovingWall : MonoBehaviour
     private bool wallCanMove = false;
     private float delay = 3f;
     private Vector2 moveDir = Vector2.right;
+    private Vector2 startPos;
     private Vector2 currentPos;
 
     private void Awake()
     {
+        startPos = transform.position;
         currentPos = transform.position;
     }
 
@@ -34,5 +36,10 @@ public class MovingWall : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         wallCanMove = true;
+    }
+
+    public void ForceRespawn()
+    {
+        currentPos = startPos;
     }
 }

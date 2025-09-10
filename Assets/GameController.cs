@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     private FireCrystal[] fireCrystals;
     private WaterCrystal[] waterCrystals;
     private Laser[] lasers;
+    private MovingWall movingWall;
 
     private float defaultMoveSpeed;
     private float defaultJumpPower;
@@ -68,6 +69,7 @@ public class GameController : MonoBehaviour
         fireCrystals = Object.FindObjectsByType<FireCrystal>(FindObjectsSortMode.None);
         waterCrystals = Object.FindObjectsByType<WaterCrystal>(FindObjectsSortMode.None);
         lasers = Object.FindObjectsByType<Laser>(FindObjectsSortMode.None);
+        movingWall = Object.FindFirstObjectByType<MovingWall>();
     }
     public void PlayerRespawn()
     {
@@ -84,6 +86,7 @@ public class GameController : MonoBehaviour
         foreach (FireCrystal fCrystal in fireCrystals) fCrystal.ForceRespawn();
         foreach (WaterCrystal wCrystal in waterCrystals) wCrystal.ForceRespawn();
         foreach (Laser laser in lasers) laser.ForceRespawn();
+        movingWall.ForceRespawn();
     }
 
     public void Respawn()
