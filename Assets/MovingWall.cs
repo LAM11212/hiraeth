@@ -5,9 +5,9 @@ public class MovingWall : MonoBehaviour
 {
     public GameObject wall;
 
-    private float moveSpeed = 2f;
+    private float moveSpeed = 4f;
     private bool wallCanMove = false;
-    private float delay = 3f;
+    private float delay = 1f;
     private Vector2 moveDir = Vector2.right;
     private Vector2 startPos;
     private Vector2 currentPos;
