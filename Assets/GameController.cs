@@ -82,11 +82,16 @@ public class GameController : MonoBehaviour
             }
         }
         Respawn();
-        foreach (DashCrystal crystal in crystals) crystal.ForceRespawn();
-        foreach (FireCrystal fCrystal in fireCrystals) fCrystal.ForceRespawn();
-        foreach (WaterCrystal wCrystal in waterCrystals) wCrystal.ForceRespawn();
-        foreach (Laser laser in lasers) laser.ForceRespawn();
-        movingWall.ForceRespawn();
+        if(crystals != null)
+            foreach (DashCrystal crystal in crystals) crystal.ForceRespawn();
+        if(fireCrystals != null)
+            foreach (FireCrystal fCrystal in fireCrystals) fCrystal.ForceRespawn();
+        if(waterCrystals != null)
+            foreach (WaterCrystal wCrystal in waterCrystals) wCrystal.ForceRespawn();
+        if(lasers != null)
+            foreach (Laser laser in lasers) laser.ForceRespawn();
+        if (movingWall != null)
+            movingWall.ForceRespawn();
     }
 
     public void Respawn()
