@@ -26,6 +26,7 @@ public class Laser : MonoBehaviour
     public float laserWidth = 0.5f;  // how fat the laser is (adjust hitbox if you change this value)
     private BoxCollider2D hitbox;
     public Light2D light;
+    private bool canFire = true;
 
     private void Start()
     {
@@ -40,6 +41,7 @@ public class Laser : MonoBehaviour
 
     private void Update()
     {
+        if (!canFire) return;
         fireTimer -= Time.deltaTime;
         
         if (fireTimer <= warningTime && activeIndicator == null)
@@ -128,5 +130,14 @@ public class Laser : MonoBehaviour
         animator.Rebind();
         animator.Update(0f);
         hitbox.enabled = false;
+
+        canFire = false;
+        StartCoroutine(EnableFiringNextFrame());
+    }
+
+    private IEnumerator EnableFiringNextFrame()
+    {
+        yield return null;
+        canFire = true;
     }
 }
