@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: 
   dialogueLines:
-  - ...
-  - ...
-  - ...
-  - last one
+  - The eyes of god do not forget
+  - The attrocities that you commit
+  - Everyone knows what you have done
+  - So don't forget to pick the gun
   autoProgressLines: 01010101
   autoProgressDelay: 1.5
   typingSpeed: 0.05
