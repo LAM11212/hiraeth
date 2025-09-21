@@ -12,6 +12,7 @@ TagManager:
   - FireCrystal
   - WaterCrystal
   - Spikes
+  - End
   layers:
   - Default
   - TransparentFX

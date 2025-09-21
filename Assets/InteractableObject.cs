@@ -11,6 +11,8 @@ public class InteractableObject : MonoBehaviour, IInteractable
 
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
+
+    [SerializeField] private GameObject endgameButton;
     public bool CanInteract()
     {
         return !isDialogueActive;
@@ -39,6 +41,9 @@ public class InteractableObject : MonoBehaviour, IInteractable
 
         dialoguePanel.SetActive(true);
         StartCoroutine(TypeLine());
+
+        if(endgameButton != null)
+            endgameButton.SetActive(dialogueData.isEndDialogue);
     }
 
     private void NextLine()
@@ -86,6 +91,9 @@ public class InteractableObject : MonoBehaviour, IInteractable
         dialogueText.SetText("");
         dialoguePanel.SetActive(false);
 
+        if (endgameButton != null)
+            endgameButton.SetActive(false);
+
         CutsceneController cutscene = Object.FindFirstObjectByType<CutsceneController>();
         if(cutscene != null)
         {
@@ -101,6 +109,39 @@ public class InteractableObject : MonoBehaviour, IInteractable
     public void OnYesButtonPressed()
     {
         SceneController.instance.NextLevel();
+    }
+
+    public void OnEndButtonPressed()
+    {
+        if (dialogueData != null && dialogueData.isEndDialogue)
+        {
+            StartCoroutine(HandleGameEnding());
+            return;
+        }
+    }
+
+    private IEnumerator HandleGameEnding()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+        GameObject gun = GameObject.FindGameObjectWithTag("gun");
+
+        if (playerMovement != null)
+            playerMovement.enabled = false;
+
+        if (gun != null)
+            gun.SetActive(false);
+
+        Animator playerAnim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+
+        if(playerAnim != null)
+        {
+            playerAnim.SetTrigger("EndAnimation");
+        }
+
+        yield return new WaitForSeconds(2f); // adjust 3f to whatever the gg animation is.
+
+        Application.Quit();
     }
 
 }
