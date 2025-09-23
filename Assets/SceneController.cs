@@ -20,6 +20,7 @@ public class SceneController : MonoBehaviour
     }
     public void NextLevel()
     {
+        Debug.Log("this does get called");
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

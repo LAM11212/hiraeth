@@ -1730,6 +1730,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 39813562}
   dialogueText: {fileID: 953002705}
   NameText: {fileID: 1686885498}
+  endgameButton: {fileID: 0}
 --- !u!1 &315871957
 GameObject:
   m_ObjectHideFlags: 0
@@ -3084,7 +3085,7 @@ GameObject:
   - component: {fileID: 513697570}
   m_Layer: 0
   m_Name: gub_0
-  m_TagString: Untagged
+  m_TagString: gun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10196,7 +10197,7 @@ Camera:
   far clip plane: 1000
   field of view: 4.3
   orthographic: 1
-  orthographic size: 4.3
+  orthographic size: 3.28
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -10221,7 +10222,7 @@ Transform:
   m_GameObject: {fileID: 584268906}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.40248695, y: 3.00365, z: -10}
+  m_LocalPosition: {x: 115.05821, y: 26.18717, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23735,7 +23736,7 @@ Tilemap:
       - {fileID: 1981713746, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
       - {fileID: -275505713, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
       - {fileID: 2044785461, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 226, y: 49, z: 0}
@@ -23803,7 +23804,7 @@ Tilemap:
       - {fileID: 1981713746, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
       - {fileID: -275505713, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
       - {fileID: 2044785461, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 232, y: 49, z: 0}
@@ -24279,7 +24280,7 @@ Tilemap:
       - {fileID: 1981713746, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
       - {fileID: -275505713, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
       - {fileID: 2044785461, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 239, y: 63, z: 0}
@@ -35793,6 +35794,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 39813562}
   dialogueText: {fileID: 953002705}
   NameText: {fileID: 1686885498}
+  endgameButton: {fileID: 0}
 --- !u!61 &1645066040
 BoxCollider2D:
   m_ObjectHideFlags: 0

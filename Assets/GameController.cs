@@ -119,4 +119,10 @@ public class GameController : MonoBehaviour
     {
         justSetNewSpawn = false;
     }
+
+    public void NextLevel()
+    {
+        Debug.Log("this does get called");
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+    }
 }

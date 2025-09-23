@@ -13,6 +13,7 @@ TagManager:
   - WaterCrystal
   - Spikes
   - End
+  - gun
   layers:
   - Default
   - TransparentFX
