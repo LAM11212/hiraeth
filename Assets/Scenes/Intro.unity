@@ -231,6 +231,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 1355460212}
   dialogueText: {fileID: 1109648966}
   NameText: {fileID: 0}
+  endgameButton: {fileID: 0}
 --- !u!61 &209144920
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13000,7 +13001,7 @@ Transform:
   m_GameObject: {fileID: 363264091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1409428, y: -1.4988999, z: -20}
+  m_LocalPosition: {x: -0.9685079, y: -1.4988999, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15781,7 +15782,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.8256127, y: 1.86444, z: -10}
+  m_LocalPosition: {x: -0.26769763, y: 1.9622099, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18173,6 +18174,7 @@ MonoBehaviour:
   rb: {fileID: 565715466}
   animator: {fileID: 565715469}
   moveSpeed: 5
+  currentState: 0
   jumpHangTimer: 0.1
   jumpPower: 8.2
   jumpCutMultiplier: 0.3
@@ -18206,6 +18208,7 @@ MonoBehaviour:
     m_Bits: 512
   bounceOverride: 0
   isMarkedForDeath: 0
+  autoInteract: 0
 --- !u!114 &565715464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20203,7 +20206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1031580011
 Transform:
   m_ObjectHideFlags: 0
@@ -22392,7 +22395,7 @@ Transform:
   m_GameObject: {fileID: 1616844411}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.241143, y: 1.1497204, z: -20}
+  m_LocalPosition: {x: 13.689842, y: 1.1497204, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

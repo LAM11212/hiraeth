@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class InteractableObject : MonoBehaviour, IInteractable
+public class EndInteractableObject : MonoBehaviour, IInteractable
 {
     public ItemDialogue dialogueData;
     public GameObject dialoguePanel;
@@ -11,6 +11,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
 
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
+    [SerializeField] GameObject gameendButton;
 
     public bool CanInteract()
     {
@@ -21,7 +22,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
     {
         if (dialogueData == null) return;
 
-        if(isDialogueActive)
+        if (isDialogueActive)
         {
             NextLine();
         }
@@ -33,7 +34,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
 
     private void StartDialogue()
     {
-        if(NameText != null)
+        if (NameText != null)
             NameText.SetText(dialogueData.itemName);
         isDialogueActive = true;
         dialogueIndex = 0;
@@ -66,7 +67,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
         isTyping = true;
         dialogueText.SetText("");
 
-        foreach(char letter in dialogueData.dialogueLines[dialogueIndex])
+        foreach (char letter in dialogueData.dialogueLines[dialogueIndex])
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(dialogueData.typingSpeed);
@@ -74,7 +75,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
 
         isTyping = false;
 
-        if(dialogueData.autoProgressLines.Length > dialogueIndex && dialogueData.autoProgressLines[dialogueIndex])
+        if (dialogueData.autoProgressLines.Length > dialogueIndex && dialogueData.autoProgressLines[dialogueIndex])
         {
             yield return new WaitForSeconds(dialogueData.autoProgressDelay);
             NextLine();
@@ -89,7 +90,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
         dialoguePanel.SetActive(false);
 
         CutsceneController cutscene = Object.FindFirstObjectByType<CutsceneController>();
-        if(cutscene != null)
+        if (cutscene != null)
         {
             cutscene.EndCutscene();
         }
@@ -103,6 +104,39 @@ public class InteractableObject : MonoBehaviour, IInteractable
     public void OnYesButtonPressed()
     {
         SceneController.instance.NextLevel();
+    }
+
+    public void OnEndButtonPressed()
+    {
+        if (dialogueData != null && dialogueData.isEndDialogue)
+        {
+            StartCoroutine(HandleGameEnding());
+            return;
+        }
+    }
+
+    private IEnumerator HandleGameEnding()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+        GameObject gun = GameObject.FindGameObjectWithTag("gun");
+
+        if (playerMovement != null)
+            playerMovement.enabled = false;
+
+        if (gun != null)
+            gun.SetActive(false);
+
+        Animator playerAnim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+
+        if (playerAnim != null)
+        {
+            playerAnim.SetTrigger("EndAnimation");
+        }
+
+        yield return new WaitForSeconds(2f); // adjust 3f to whatever the gg animation is.
+        Debug.Log("exiting game. . .");
+        Application.Quit();
     }
 
 }
