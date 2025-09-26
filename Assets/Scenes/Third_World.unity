@@ -1730,7 +1730,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 1757922722}
   dialogueText: {fileID: 14118374}
   NameText: {fileID: 671213929}
-  endgameButton: {fileID: 992093943}
+  gameendButton: {fileID: 0}
 --- !u!1 &315871957
 GameObject:
   m_ObjectHideFlags: 0
@@ -2818,9 +2818,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 484632342}
+      - m_Target: {fileID: 1645066039}
         m_TargetAssemblyTypeName: InteractableObject, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: EndDialogue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12923,9 +12923,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 98a4f4f3267f3834fba6648b2a70f500, type: 3}
-        m_TargetAssemblyTypeName: InteractableObject, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 313905497}
+        m_TargetAssemblyTypeName: EndInteractableObject, Assembly-CSharp
+        m_MethodName: OnEndButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24822,7 +24822,7 @@ Tilemap:
       - {fileID: 1981713746, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
       - {fileID: -275505713, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
       - {fileID: 2044785461, guid: 26284988034052d478617bb1d9ce5ab5, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 239, y: 63, z: 0}

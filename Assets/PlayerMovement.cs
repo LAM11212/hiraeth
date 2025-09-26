@@ -99,7 +99,6 @@ public class PlayerMovement : MonoBehaviour
     //working on:
     //MAIN OBJ IS SPRITES/ANIMATIONS
 
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
