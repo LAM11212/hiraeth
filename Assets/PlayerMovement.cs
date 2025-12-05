@@ -266,6 +266,7 @@ public class PlayerMovement : MonoBehaviour
 
             dashDir = input.normalized;
             isDashing = true;
+            animator.SetBool("isDashing", true);
             dashTimer = dashTime;
             rb.gravityScale = 0f;
             rb.linearVelocity = Vector2.zero;
@@ -404,6 +405,7 @@ public class PlayerMovement : MonoBehaviour
     private void CancelDash()
     {
         isDashing = false;
+        animator.SetBool("isDashing", false);
         dashTimer = 0f;
         dashDir = Vector2.zero;
         rb.gravityScale = baseGravity;
