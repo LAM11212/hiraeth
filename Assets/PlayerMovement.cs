@@ -93,6 +93,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Cutscene Movement")]
     public bool autoInteract = false;
 
+    //particles
+    public ParticleSystem dashTrail;
+
     //bug fixes:
     //fix issue with not being able to move quickly in opposite direction to wall jump. (slightly fixed, will come back later.)
     //fix issue with wall climb jump not wall climbing again while holding jump button.
@@ -107,11 +110,18 @@ public class PlayerMovement : MonoBehaviour
              Destroy(gameObject);
         }
         rb = GetComponent<Rigidbody2D>();
+        dashTrail = GetComponentInChildren<ParticleSystem>();
     }
     void Update()
     {
 
         if (currentState != PlayerState.Normal) return;
+
+        if(!isDashing)
+        {
+            dashTrail.Stop();
+        }
+
         if (bounceOverride)
         {
             bounceTimer += Time.deltaTime;
@@ -260,7 +270,7 @@ public class PlayerMovement : MonoBehaviour
         if (ctx.performed && CanDash())
         {
             Vector2 input = new Vector2(horizontalMovement, verticalMovement);
-
+            dashTrail.Play();
             if(input == Vector2.zero)
                 input = new Vector2(isFacingRight ? 1f : -1f, 0f);
 
