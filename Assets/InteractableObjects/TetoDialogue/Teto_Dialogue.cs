@@ -7,19 +7,39 @@ public class Teto_Dialogue : MonoBehaviour
     [SerializeField] private BoxCollider2D dialogueTrigger;
     [SerializeField] private InteractableObject interactableObject;
     [SerializeField] private Button yesButton;
+    [SerializeField] private bool slideAway;
+    private Transform spriteTransform;
     private Coroutine redisplayCoroutine;
+
+    private void Awake()
+    {
+        if (slideAway)
+        {
+            spriteTransform = transform;
+            interactableObject.OnDialogueFinished += DialogueFinished;
+        }
+    }
+
+    private void DialogueFinished()
+    {
+        if(slideAway)
+        {
+            StartCoroutine(SlideOffScreen());
+        }
+    }
 
     private void Start()
     {
         yesButton.gameObject.SetActive(false); // Hide the button initially
         yesButton.enabled = false; 
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            if(!interactableObject.IsDialogueActive())
+            if (!interactableObject.IsDialogueActive())
             {
                 interactableObject.Interact();
                 redisplayCoroutine = StartCoroutine(RedisplayDialogue());
@@ -55,5 +75,25 @@ public class Teto_Dialogue : MonoBehaviour
         // Start it again
         interactableObject.Interact();
         redisplayCoroutine = null;
+    }
+
+    private IEnumerator SlideOffScreen()
+    {
+        Vector3 startPos = spriteTransform.position;
+        Vector3 endPos = startPos + Vector3.left * 20f; // slide 20 units left
+        float slideDuration = 3f;
+        float elapsedTime = 0f; 
+
+        while (elapsedTime < slideDuration) 
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / slideDuration; 
+            t *= t;
+
+            spriteTransform.position = Vector3.Lerp(startPos, endPos, t);
+
+            yield return null;
+        }
+        spriteTransform.position = endPos;
     }
 }
