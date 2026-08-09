@@ -7,6 +7,7 @@ public class Teto_Dialogue : MonoBehaviour
     [SerializeField] private BoxCollider2D dialogueTrigger;
     [SerializeField] private InteractableObject interactableObject;
     [SerializeField] private Button yesButton;
+    private Coroutine redisplayCoroutine;
 
     private void Start()
     {
@@ -21,8 +22,25 @@ public class Teto_Dialogue : MonoBehaviour
             if(!interactableObject.IsDialogueActive())
             {
                 interactableObject.Interact();
-                StartCoroutine(RedisplayDialogue());
+                redisplayCoroutine = StartCoroutine(RedisplayDialogue());
 
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            if(interactableObject.IsDialogueActive())
+            {
+                interactableObject.EndDialogue();
+            }
+
+            if(redisplayCoroutine != null)
+            {
+                StopCoroutine(redisplayCoroutine);
+                redisplayCoroutine = null;
             }
         }
     }
@@ -36,5 +54,6 @@ public class Teto_Dialogue : MonoBehaviour
 
         // Start it again
         interactableObject.Interact();
+        redisplayCoroutine = null;
     }
 }
