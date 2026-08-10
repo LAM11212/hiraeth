@@ -16,7 +16,7 @@ public class Teto_Dialogue : MonoBehaviour
         if (slideAway)
         {
             spriteTransform = transform;
-            interactableObject.OnDialogueFinished += DialogueFinished;
+            interactableObject.OnDialogueCompleted += DialogueFinished;
         }
     }
 
@@ -95,5 +95,13 @@ public class Teto_Dialogue : MonoBehaviour
             yield return null;
         }
         spriteTransform.position = endPos;
+    }
+
+    private void OnDestroy()
+    {
+        if(interactableObject != null)
+        {
+            interactableObject.OnDialogueCompleted -= DialogueFinished;
+        }
     }
 }
