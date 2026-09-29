@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0800cd9d9e7384da3732406d1358da, type: 3}
+  m_Name: TetoDialogue_1
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDialogue
+  itemName: Teto
+  dialogueLines:
+  - You may have noticed you only get one dash until you hit the ground again
+  - also you cant climb forever
+  - ...
+  - did you really think youd be able to do that?
+  - i mean what kind of game would this be if you could dash forever and climb forever
+  - no i mean seriously, i could do that for you but like come on dude
+  - do you even think about things before you say them
+  - god are you still listening to me?
+  - you know that you can move during these
+  - so like...
+  - can you go?
+  - i guess ill just...
+  autoProgressLines: 010101010101010101010101
+  autoProgressDelay: 1.5
+  typingSpeed: 0.05
+  isEndDialogue: 0

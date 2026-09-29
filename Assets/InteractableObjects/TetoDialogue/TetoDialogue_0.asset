@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a0800cd9d9e7384da3732406d1358da, type: 3}
-  m_Name: FirstBox
-  m_EditorClassIdentifier: 
-  itemName: 
+  m_Name: TetoDialogue_0
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDialogue
+  itemName: Teto
   dialogueLines:
-  - We are watching
-  - We always have been
-  autoProgressLines: 0101
-  autoProgressDelay: 1.5
+  - Press [C] to jump! (hold to jump higher)
+  - Press [X] to dash!
+  - Press [Z] to wallgrab! and press [UP] or [DOWN] to move on the wall.
+  autoProgressLines: 010101
+  autoProgressDelay: 2
   typingSpeed: 0.05
   isEndDialogue: 0

@@ -12,6 +12,8 @@ public class InteractableObject : MonoBehaviour, IInteractable
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
 
+    public System.Action OnDialogueCompleted; // this is used when the last line is finished
+
     public bool CanInteract()
     {
         return !isDialogueActive;
@@ -58,6 +60,7 @@ public class InteractableObject : MonoBehaviour, IInteractable
         else
         {
             EndDialogue();
+            OnDialogueCompleted?.Invoke();
         }
     }
 
