@@ -10,12 +10,15 @@ public class BIRDBRAIN : MonoBehaviour
     private void Start()
     {
         videoPlayer.loopPointReached += VideoFinished;
+        videoPlayer.enabled = true;
+        videoCanvas.enabled = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Player"))
         {
+            videoCanvas.enabled = true;
             videoCanvas.gameObject.SetActive(true);
             videoPlayer.Play();
         }
@@ -29,5 +32,6 @@ public class BIRDBRAIN : MonoBehaviour
     private void OnDestroy()
     {
         videoPlayer.loopPointReached -= VideoFinished;
+        videoPlayer.enabled = false;
     }
 }
