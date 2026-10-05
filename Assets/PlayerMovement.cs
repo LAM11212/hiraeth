@@ -252,7 +252,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if(wallClimbJumpsRemaining <= 0)
             {
+                isWallClimbing = false;
                 wallClimbTimer = 0f;
+                isWallSliding = true;
+                ProcessWallJump();
+                DoWallJump();
                 return;
             }
             isWallClimbing = false;
@@ -390,6 +394,32 @@ public class PlayerMovement : MonoBehaviour
         {
             wallJumpTimer -= Time.deltaTime;
         }
+    }
+
+    private void DoWallJump()
+    {
+        isWallClimbing = false;
+        isWallSliding = false;
+        isWallJumping = true;
+
+        rb.gravityScale = baseGravity;
+        rb.linearVelocity = new Vector2(
+            wallJumpDir * wallJumpPower.x,
+            wallJumpPower.y
+        );
+
+        wallJumpTimer = 0f;
+
+        if (transform.localScale.x != wallJumpDir)
+        {
+            isFacingRight = !isFacingRight;
+
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+        }
+
+        Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f);
     }
 
     private void ProcessDash()
